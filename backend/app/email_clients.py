@@ -13,7 +13,27 @@ def fetch_support_emails() -> List[Dict[str, str]]:
     filters = ["support", "query", "request", "help"]
     results: List[Dict[str, str]] = []
     if not IMAP_USER or not IMAP_PASSWORD:
-        return results
+        # Return sample data for demo purposes
+        return [
+            {
+                "sender": "demo@example.com",
+                "subject": "Support needed for login issue",
+                "body": "Hi team, I am unable to log into my account since yesterday. Could you please help me resolve this issue? This is urgent as I need to access my data immediately.",
+                "received_at": "2025-01-06 10:30:00"
+            },
+            {
+                "sender": "customer@test.com", 
+                "subject": "Query about product pricing",
+                "body": "Hello, I wanted to understand the pricing tiers better. Could you share a detailed breakdown? Thanks!",
+                "received_at": "2025-01-06 11:15:00"
+            },
+            {
+                "sender": "urgent@company.org",
+                "subject": "Critical help needed for downtime", 
+                "body": "Our servers are down, and we need immediate support. This is highly critical and affecting our operations.",
+                "received_at": "2025-01-06 12:00:00"
+            }
+        ]
     mail = imaplib.IMAP4_SSL(IMAP_HOST)
     mail.login(IMAP_USER, IMAP_PASSWORD)
     mail.select(IMAP_FOLDER)
@@ -57,6 +77,9 @@ def fetch_support_emails() -> List[Dict[str, str]]:
 
 def send_email(to_address: str, subject: str, body: str) -> None:
     if not SMTP_USER or not SMTP_PASSWORD:
+        print(f"DEMO: Would send email to {to_address}")
+        print(f"Subject: {subject}")
+        print(f"Body: {body[:100]}...")
         return
     msg = MIMEText(body)
     msg['Subject'] = subject
